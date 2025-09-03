@@ -117,11 +117,9 @@ def main
 end
 
 def parse_plist(filepath)
-  r, w = IO.pipe
-  spawn("plutil -convert json -o - -", in: filepath, out: w)
-  w.close
-  Process.wait
-  JSON.parse(r.read)
+  # Use a simpler approach with backticks instead of pipes
+  json_output = `plutil -convert json -o - "#{filepath}"`
+  JSON.parse(json_output)
 end
 
 main
@@ -153,7 +151,7 @@ main
 A tiny, fast, and reliable workflow for launching your saved TablePlus
 connections.
 
-At only 44 lines of code and built for Alfred 5, this should be one of the
+At only 42 lines of code and built for Alfred 5, this should be one of the
 fastest workflows for TablePlus.
 
 &lt;https://github.com/zachahn/alfred-tableplus-workflow&gt;

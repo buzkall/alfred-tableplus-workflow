@@ -34,11 +34,9 @@ def main
 end
 
 def parse_plist(filepath)
-  r, w = IO.pipe
-  spawn("plutil -convert json -o - -", in: filepath, out: w)
-  w.close
-  Process.wait
-  JSON.parse(r.read)
+  # Use a simpler approach with backticks instead of pipes
+  json_output = `plutil -convert json -o - "#{filepath}"`
+  JSON.parse(json_output)
 end
 
 main
